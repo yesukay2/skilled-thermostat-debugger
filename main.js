@@ -1,4 +1,3 @@
-// Room objects
 const rooms = [
   {
     name: "Living Room",
@@ -212,6 +211,7 @@ const warmOverlay = `linear-gradient(to bottom, rgba(236, 96, 98, 0.2), rgba(248
 let selectedRoom = rooms[0].name;
 let coolPresetTrigger = false;
 let warmPresetTrigger = false;
+let autoToggleInterval;
 
 // Utility Functions
 const setOverlay = (room) => {
@@ -235,7 +235,7 @@ const calculatePointPosition = (currTemp) => {
 
 const setIndicatorPoint = (currTemp) => {
   const position = calculatePointPosition(currTemp);
-  svgPoint.style.transform = `translate(${position.translateX}px, ${position.translateY}px)`;
+  svgPoint?.style.transform = `translate(${position.translateX}px, ${position.translateY}px)`;
 };
 
 const displayTime = (room) => {
@@ -494,6 +494,52 @@ const handleModalSubmit = (e) => {
   modal.style.display = "none";
 };
 
+// Cleanup function
+const cleanupEventListeners = () => {
+  roomSelect.removeEventListener("change", handleRoomSelectChange);
+  increaseBtn.removeEventListener("click", handleIncreaseTemp);
+  decreaseBtn.removeEventListener("click", handleDecreaseTemp);
+  coolBtn.removeEventListener("click", handleCoolPreset);
+  warmBtn.removeEventListener("click", handleWarmPreset);
+  saveTempBtn.removeEventListener("click", handleSaveTempPreset);
+  saveTimeBtn.removeEventListener("click", handleSaveTimePreset);
+  roomsControlContainer.removeEventListener("click", handleRoomControlClick);
+  masterToggler.removeEventListener("click", toggleAllAircon);
+  modalForm.removeEventListener("submit", handleModalSubmit);
+  addRoomBtn.removeEventListener("click", showModal);
+  closeBtn.removeEventListener("click", hideModal);
+  window.removeEventListener("click", handleWindowClick);
+  newPresetBtn.removeEventListener("click", showPresetInputs);
+  closePresetBtn.removeEventListener("click", hidePresetInputs);
+  clearInterval(autoToggleInterval);
+};
+
+// Helper functions for modal and preset controls
+const showModal = () => {
+  modal.style.display = "block";
+};
+
+const hideModal = () => {
+  modal.style.display = "none";
+};
+
+const handleWindowClick = (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+const showPresetInputs = () => {
+  inputsDiv.classList.contains("hidden") &&
+    inputsDiv.classList.remove("hidden");
+};
+
+const hidePresetInputs = () => {
+  inputsDiv.classList.add("hidden");
+  errorSpan.style.display = "none";
+  timePresetError.style.display = "none";
+};
+
 // Initialize
 const init = () => {
   // Set initial state
@@ -520,34 +566,32 @@ const init = () => {
   modalForm.addEventListener("submit", handleModalSubmit);
 
   // Modal controls
-  addRoomBtn.addEventListener("click", () => {
-    modal.style.display = "block";
-  });
+  addRoomBtn.addEventListener("click", showModal);
+  closeBtn.addEventListener("click", hideModal);
+  window.addEventListener("click", handleWindowClick);
 
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  });
-
-  newPresetBtn.addEventListener("click", () => {
-    inputsDiv.classList.contains("hidden") &&
-      inputsDiv.classList.remove("hidden");
-  });
-
-  closePresetBtn.addEventListener("click", () => {
-    inputsDiv.classList.add("hidden");
-    errorSpan.style.display = "none";
-    timePresetError.style.display = "none";
-  });
+  // Preset controls
+  newPresetBtn.addEventListener("click", showPresetInputs);
+  closePresetBtn.addEventListener("click", hidePresetInputs);
 
   // Auto toggle interval
-  setInterval(autoToggleAircon, 60000);
+  autoToggleInterval = setInterval(autoToggleAircon, 60000);
 };
 
 // Start the application
 init();
+
+// Cleanup on window unload
+window.addEventListener("beforeunload", cleanupEventListeners);
+
+// Export functions for testing
+export default {
+  Room,
+  rooms,
+  setSelectedRoom,
+  handleIncreaseTemp,
+  handleDecreaseTemp,
+  toggleAllAircon,
+  handleModalSubmit,
+  generateRooms,
+};

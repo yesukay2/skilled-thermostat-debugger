@@ -5,6 +5,9 @@
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Smart Home Thermostat Control Panel" />
 
     <!-- Manrope Font Embeded -->
     <link
@@ -36,206 +39,305 @@
     <title>Smart Home | Thermostat Widget</title>
   </head>
   <body>
-    <div class="main-container">
-      <div class="container animate__animated animate__fadeInUp">
-        <div class="top-content">
+    <main class="main-container">
+      <section class="container animate__animated animate__fadeInUp">
+        <header class="top-content">
           <h1 class="logo">Thermostat</h1>
           <div class="room-select">
-            <select id="rooms"></select>
+            <select
+              id="rooms"
+              aria-label="Select room to control"></select>
             <button
               id="add-room"
               type="button"
-              aria-label="Add Room">
+              aria-label="Add new room">
               <ion-icon name="add"></ion-icon>
             </button>
           </div>
-        </div>
+        </header>
 
         <!-- Modal with form for assigning new room -->
-        <div
+        <dialog
           class="modal"
-          style="display: none">
-          <div id="modal-form">
-            <h1>Assign New Room</h1>
+          style="display: none"
+          aria-labelledby="modal-title">
+          <article id="modal-form">
+            <h1 id="modal-title">Assign New Room</h1>
             <!-- Close button -->
-            <div class="close-modal">&times</div>
+            <button
+              class="close-modal"
+              aria-label="Close modal">
+              &times;
+            </button>
             <form
               action=""
               method="post"
               id="room-form">
+              <label
+                for="room-name"
+                class="sr-only"
+                >Room Name</label
+              >
               <input
                 type="text"
+                id="room-name"
                 placeholder="Room Name"
                 name="room-name"
-                alt="Room Name"
+                aria-label="Room name"
                 required />
+
+              <label
+                for="default-temp"
+                class="sr-only"
+                >Default Temperature</label
+              >
               <input
                 type="text"
+                id="default-temp"
                 placeholder="Default Temperature (10-32)"
                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"
                 min="10"
                 max="32"
                 name="default-temp"
-                alt="Default Temperature"
+                aria-label="Default temperature between 10 and 32 degrees"
                 required />
 
+              <label
+                for="room-image"
+                class="sr-only"
+                >Room Image</label
+              >
               <input
                 type="file"
+                id="room-image"
                 accept="image/*"
                 placeholder="Room Image"
                 name="room-image"
-                alt="Room Image"
+                aria-label="Upload room image"
                 required />
+
               <div class="timeInputs">
+                <label
+                  for="start-time"
+                  class="sr-only"
+                  >Start Time</label
+                >
                 <input
                   type="text"
+                  id="start-time"
                   placeholder="Start Time"
                   name="start-time"
                   onfocus="type='time'"
                   onblur="type='text'"
-                  alt="Start Time" />
+                  aria-label="Schedule start time" />
+
+                <label
+                  for="end-time"
+                  class="sr-only"
+                  >End Time</label
+                >
                 <input
                   type="text"
+                  id="end-time"
                   placeholder="End Time"
                   name="end-time"
                   onfocus="type='time'"
                   onblur="type='text'"
-                  alt="end Time" />
+                  aria-label="Schedule end time" />
               </div>
               <button
                 id="modal-save"
-                type="submit">
+                type="submit"
+                aria-label="Save room settings">
                 Save
               </button>
             </form>
-          </div>
-        </div>
+          </article>
+        </dialog>
+
         <!-- Interior card -->
-        <div class="room">
+        <article class="room">
           <div class="text">
-            <h3 class="room-name">Living Room</h3>
+            <h2 class="room-name">Living Room</h2>
             <p class="currentTemp">27°</p>
           </div>
-        </div>
-        <div class="main-content">
-          <div class="temperature">
-            <svg
-              class="point"
-              width="44"
-              height="44"
-              viewBox="0 0 44 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <circle
-                cx="22"
-                cy="22"
-                r="19.5"
-                fill="#515155"
-                stroke="white"
-                stroke-width="5" />
-              <circle
-                cx="21.5"
-                cy="21.5"
-                r="9.5"
-                fill="#FFD7A8" />
-            </svg>
+        </article>
+
+        <section class="main-content">
+          <section class="temperature">
+            <figure>
+              <svg
+                class="point"
+                width="44"
+                height="44"
+                viewBox="0 0 44 44"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <circle
+                  cx="22"
+                  cy="22"
+                  r="19.5"
+                  fill="#515155"
+                  stroke="white"
+                  stroke-width="5" />
+                <circle
+                  cx="21.5"
+                  cy="21.5"
+                  r="9.5"
+                  fill="#FFD7A8" />
+              </svg>
+            </figure>
 
             <div class="info">
               <p>Current Temp</p>
-              <h1 id="temp"></h1>
+              <h2 id="temp"></h2>
             </div>
-          </div>
+          </section>
 
-          <div class="controls">
+          <section class="controls">
             <p>Set Temperature</p>
             <div class="buttons">
-              <button id="reduce">
+              <button
+                id="reduce"
+                aria-label="Decrease temperature">
                 <ion-icon
                   size="large"
                   name="remove-outline"></ion-icon>
               </button>
-              <button id="increase">
+              <button
+                id="increase"
+                aria-label="Increase temperature">
                 <ion-icon
                   size="large"
                   name="add-outline"></ion-icon>
               </button>
             </div>
-          </div>
+          </section>
 
-          <div class="default-settings">
-            <button id="cool">
+          <section class="default-settings">
+            <button
+              id="cool"
+              aria-label="Set to cool preset">
               <ion-icon
                 size="large"
                 name="snow-outline"></ion-icon>
               Cool
             </button>
-            <button id="warm">
+            <button
+              id="warm"
+              aria-label="Set to warm preset">
               <ion-icon
                 size="large"
                 name="leaf"></ion-icon>
               warm
             </button>
-          </div>
+          </section>
 
-          <div class="configure">
-            <button id="newPreset">
+          <section class="configure">
+            <button
+              id="newPreset"
+              aria-label="Configure temperature presets">
               <ion-icon name="cog"></ion-icon>Configure Presets
             </button>
-          </div>
+          </section>
 
-          <div class="inputs hidden">
+          <section class="inputs hidden">
             <div>
+              <label
+                for="coolInput"
+                class="sr-only"
+                >Cool Temperature</label
+              >
               <input
                 id="coolInput"
                 type="number"
                 min="10"
                 max="22"
-                placeholder="Cool" />
+                onblur="this.value = this.value.replace(/[^0-9]/g, '');"
+                placeholder="Cool"
+                aria-label="Set cool temperature between 10 and 22 degrees" />
+
+              <label
+                for="warmInput"
+                class="sr-only"
+                >Warm Temperature</label
+              >
               <input
                 id="warmInput"
                 type="number"
                 min="22"
                 max="32"
-                placeholder="Warm" />
-              <button id="saveTemp">Save</button>
+                placeholder="Warm"
+                aria-label="Set warm temperature between 22 and 32 degrees" />
+
+              <button
+                id="saveTemp"
+                aria-label="Save temperature presets">
+                Save
+              </button>
               <span class="error"></span>
             </div>
 
             <div class="timePreset">
+              <label
+                for="startTime"
+                class="sr-only"
+                >Start Time</label
+              >
               <input
                 id="startTime"
                 type="text"
                 placeholder="Start Time"
                 onfocus="this.type='time';"
-                onblur="this.type='text';" />
+                onblur="this.type='text';"
+                aria-label="Set schedule start time" />
+
+              <label
+                for="endTime"
+                class="sr-only"
+                >End Time</label
+              >
               <input
                 id="endTime"
                 type="text"
                 placeholder="End Time"
                 onfocus="this.type='time';"
-                onblur="this.type='text';" />
-              <button id="saveTime">Save</button>
+                onblur="this.type='text';"
+                aria-label="Set schedule end time" />
+
+              <button
+                id="saveTime"
+                aria-label="Save schedule times">
+                Save
+              </button>
               <span class="timePresetError"></span>
             </div>
-            <button id="close">
+            <button
+              id="close"
+              aria-label="Close preset configuration">
               <ion-icon name="checkmark-done"></ion-icon>
             </button>
-          </div>
-        </div>
-      </div>
+          </section>
+        </section>
+      </section>
 
-      <div class="rooms-container">
-        <div class="master-switch">
-          <ion-label id="masterSwitchLabel">Master Switch</ion-label>
-          <ion-icon
+      <aside class="rooms-container">
+        <section class="master-switch">
+          <span id="masterSwitchLabel">Master Switch</span>
+          <button
             id="masterToggler"
-            size="large"
-            name="toggle-outline"></ion-icon>
-        </div>
-        <div
-          class="container rooms-control animate__animated animate__fadeIn"></div>
-      </div>
-    </div>
+            aria-label="Toggle all air conditioners"
+            aria-labelledby="masterSwitchLabel">
+            <ion-icon
+              size="large"
+              name="toggle-outline"></ion-icon>
+          </button>
+        </section>
+        <section
+          class="container rooms-control animate__animated animate__fadeIn"></section>
+      </aside>
+    </main>
 
     <!-- Ionicons -->
     <script
@@ -244,5 +346,20 @@
     <script
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Hidden label for screen readers -->
+    <style>
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
   </body>
 </html>
