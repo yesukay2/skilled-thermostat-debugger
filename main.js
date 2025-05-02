@@ -235,7 +235,7 @@ const calculatePointPosition = (currTemp) => {
 
 const setIndicatorPoint = (currTemp) => {
   const position = calculatePointPosition(currTemp);
-  svgPoint?.style.transform = `translate(${position.translateX}px, ${position.translateY}px)`;
+  svgPoint.style.transform = `translate(${position.translateX}px, ${position.translateY}px)`;
 };
 
 const displayTime = (room) => {
@@ -585,7 +585,8 @@ init();
 window.addEventListener("beforeunload", cleanupEventListeners);
 
 // Export functions for testing
-export default {
+// Export for CommonJS
+module.exports = {
   Room,
   rooms,
   setSelectedRoom,

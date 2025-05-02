@@ -1,14 +1,10 @@
-/**
- * @jest-environment jsdom
- */
-
-// import { JSDOM } from "jsdom";
+import { JSDOM } from "jsdom";
 import fs from "fs";
 import path from "path";
 
 // Load your HTML file
 const html = readFileSync(resolve(__dirname, "index.html"), "utf8");
-// const { window } = new JSDOM(html, { runScripts: "dangerously" });
+const { window } = new JSDOM(html, { runScripts: "dangerously" });
 global.document = window.document;
 global.window = window;
 
