@@ -35,6 +35,11 @@ body {
   justify-content: center;
   align-items: center;
 }
+.master-switch button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
 
 #masterToggler,
 .close-modal {
