@@ -42,14 +42,21 @@
           <h1 class="logo">Thermostat</h1>
           <div class="room-select">
             <select id="rooms"></select>
-            <button id="add-room">Add Room</button>
+            <button
+              id="add-room"
+              type="button"
+              aria-label="Add Room">
+              <ion-icon name="add"></ion-icon>
+            </button>
           </div>
         </div>
 
         <!-- Modal with form for assigning new room -->
-        <div class="modal">
-          <h1>Assign New Room</h1>
+        <div
+          class="modal"
+          style="display: none">
           <div id="modal-form">
+            <h1>Assign New Room</h1>
             <!-- Close button -->
             <div class="close-modal">&times</div>
             <form
@@ -64,7 +71,10 @@
                 required />
               <input
                 type="text"
-                placeholder="Default Temperature"
+                placeholder="Default Temperature (10-32)"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                min="10"
+                max="32"
                 name="default-temp"
                 alt="Default Temperature"
                 required />
@@ -76,16 +86,22 @@
                 name="room-image"
                 alt="Room Image"
                 required />
-              <input
-                type="time"
-                placeholder="Start Time"
-                name="start-time"
-                alt="Start Time" />
-              <input
-                type="time"
-                placeholder="End Time"
-                name="end-time"
-                alt="end Time" />
+              <div class="timeInputs">
+                <input
+                  type="text"
+                  placeholder="Start Time"
+                  name="start-time"
+                  onfocus="type='time'"
+                  onblur="type='text'"
+                  alt="Start Time" />
+                <input
+                  type="text"
+                  placeholder="End Time"
+                  name="end-time"
+                  onfocus="type='time'"
+                  onblur="type='text'"
+                  alt="end Time" />
+              </div>
               <button
                 id="modal-save"
                 type="submit">
@@ -214,8 +230,7 @@
           <ion-icon
             id="masterToggler"
             size="large"
-            name="toggle-outline"
-            color="dark"></ion-icon>
+            name="toggle-outline"></ion-icon>
         </div>
         <div
           class="container rooms-control animate__animated animate__fadeIn"></div>
